@@ -127,6 +127,58 @@ describe("basic pushing/poping list", function() {
     });
 });
 
+describe("ltrim", function() {
+    var testKey = "myKey3";
+    var testValues = [1, 2, 3, 4, 5];
+    var testValue = 10;
+    
+    it("should return [1, 2]", function(done) {
+
+        var r = redismock.createClient("", "", "");
+
+        r.ltrim(testKey, 0, 1, function(err, result) {
+
+            result.should.have.length(2);
+            result[0].should.equal(1);
+            result[1].should.equal(2);
+            r.end();
+
+            done();
+        });
+    });
+
+    it("should return [4, 5]", function(done) {
+
+        var r = redismock.createClient("", "", "");
+
+        r.ltrim(testKey, 1, 2, function(err, result) {
+
+            result.should.have.length(2);
+            result[0].should.equal(4);
+            result[1].should.equal(5);
+            
+            r.end();
+
+            done();
+        });
+    });
+    
+    it("should return [3]", function(done) {
+
+        var r = redismock.createClient("", "", "");
+
+        r.ltrim(testKey, 0, 0, function(err, result) {
+
+            result.should.have.length(1);
+            result[0].should.equal(3);
+            
+            r.end();
+
+            done();
+        });
+    });
+});
+
 describe("llen", function() {
     var testKey = "myKey3";
     var testValues = [1, 2, 3, 4, 5];
